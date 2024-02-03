@@ -1,0 +1,12 @@
+{
+    "server": {
+        "host": "127.0.0.1",
+        "port": 80,
+        "user": "reques6e"
+    },
+    "forum": {
+        "node_id": 54,
+        "api_key": "YiLixLHbdYm2MIMQnF0DXcJ8Cpi_9n4S"
+    },
+    "secret": "12321321321"
+}

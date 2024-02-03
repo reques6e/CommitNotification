@@ -7,7 +7,14 @@ import hashlib
 
 app = Flask(__name__)
 
-from src.config import host_server, port_server, node_id, api_key, user
+with open('src/config.json', 'r', encoding='utf-8')as config:
+    config = json.load(config)
+    host_server = config['server']['host']
+    port_server = config['server']['port']
+    user = config['server']['user']
+    node_id = config['forum']['node_id']
+    api_key = config['forum']['api_key']
+    secret = config['secret']
 
 def get_config():
     with open('src/data.json', 'r', encoding='utf-8') as f:
@@ -21,7 +28,6 @@ def save_data(data):
 
 
 def is_valid_signature(payload, signature):
-    secret = "12321321321"  # Замените на значение, которое вы ввели в GitHub
     hashed_payload = hmac.new(secret.encode('utf-8'), payload, hashlib.sha1).hexdigest()
     github_signature = "sha1=" + hashed_payload
     return hmac.compare_digest(github_signature, signature)
@@ -77,7 +83,7 @@ def webhook(client_id):
             message = f"""Репозиторий: [URL={github_data['repository']['html_url']}]{github_data['repository']['name']}[/URL]
                         Обновил: [URL={github_data['sender']['url']}]{github_data['sender']['login']}[/URL]
                         Информация: [URL={github_data['commits'][0]['url']}]{github_data['commits'][0]['id']}[/URL]\n\n
-                        Хочешь так же? Ну так сделай же это! [URL=https://devcore.fun/threads/862/]Клик[/URL]"""
+                        Хочешь так же? Ну так сделай же это! [URL=https://devcore.fun/threads/862/]Клик[/URL]""" # Изменил = хуйло
             thread_id = client_data['thread_id']
 
             response = requests.post(
