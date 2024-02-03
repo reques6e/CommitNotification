@@ -1,11 +1,10 @@
 {
     "clients": {
-        "id": "asdasdsa",
-        "asdasdsa": {
+        "id": "None",
+        "None": {
             "name": "reques6e",
             "thread_id": false,
             "post_id": false
         }
     }
 }
-

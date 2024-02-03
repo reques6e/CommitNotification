@@ -4,6 +4,7 @@ import requests
 import json
 import hmac
 import hashlib
+from colorama import Fore
 
 app = Flask(__name__)
 
@@ -44,7 +45,7 @@ def webhook(client_id):
     signature = request.headers.get('X-Hub-Signature')
 
     if not is_valid_signature(payload, signature):
-        abort(403)
+        return jsonify({'message': 'Incorrect secret key entered'}), 403
 
     client_data = data['clients']
 
@@ -76,9 +77,9 @@ def webhook(client_id):
 
             save_data(data)
             if response.status_code == 200:
-                print('Успех.')
+                print(f'[{Fore.GREEN}Success{Fore.RESET}] Response: 200')
             else:
-                print(f'[ERROR] Status code: {response.status_code}')
+                print(f'[{Fore.RED}ERROR{Fore.RESET}] Status code: {response.status_code}')
         else:
             message = f"""Репозиторий: [URL={github_data['repository']['html_url']}]{github_data['repository']['name']}[/URL]
                         Обновил: [URL={github_data['sender']['url']}]{github_data['sender']['login']}[/URL]
@@ -93,13 +94,13 @@ def webhook(client_id):
             )
 
             if response.status_code == 200:
-                print('Успех.')
+                print(f'[{Fore.GREEN}Success{Fore.RESET}] Response: 200')
             else:
-                print(f'[ERROR] Status code: {response.status_code}')
+                print(f'[{Fore.RED}ERROR{Fore.RESET}] Status code: {response.status_code}')
 
         return jsonify({'message': 'Webhook processed successfully'}), 200
     else:
-        abort(400)
+        return jsonify({'message': 'User data not found'}), 400
 
 if __name__ == '__main__':
-    app.run(host='83.147.247.10', port=port_server, debug=True)
+    app.run(host=host_server, port=port_server, debug=True)

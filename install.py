@@ -1,6 +1,5 @@
 import json
 import secrets
-from git import Repo
 
 with open('src/config.json', 'r', encoding='utf-8')as config:
     config = json.load(config)
@@ -9,12 +8,12 @@ def generate_keys(length=24):
     id = secrets.token_urlsafe(length)
     return id
 
-print('Insaller software\n\n')
-    
+print('Insaller software\n')
+
 host = input('Введите ip-сервера: ')
-port = input('Введите порт сервера: ')
+port = int(input('Введите порт сервера: '))
 api_key = input('Введите API ключ от форума: ')
-node_id = input('Введите ID раздела для создания темы: ')
+node_id = int(input('Введите ID раздела для создания темы: '))
 user_name = input('Введите имя пользователя: ')
 
 secret_key = generate_keys()
@@ -27,7 +26,7 @@ config['forum']['node_id'] = node_id
 config['forum']['api_key'] = api_key
 config['secret'] = secret_key
 
-with open('src/data.json', 'w', encoding='utf-8') as file:
+with open('src/config.json', 'w', encoding='utf-8') as file:
     json.dump(config, file, ensure_ascii=False, indent=4)
 
 data = {
@@ -44,4 +43,4 @@ data = {
 with open('src/data.json', 'w+', encoding='utf-8') as json_file:
     json.dump(data, json_file, ensure_ascii=False, indent=4)
 
-print(f'Ваши данные:\nСсылка: http://{host}:{port}/client/{id}/webhook/devcore\nВаш секретный ключ: {secret_key}\nТип контента: application/json')
+print(f'\nВаши данные:\nㅤㅤСсылка: http://{host}:{port}/client/{id}/webhook/devcore\nㅤㅤВаш секретный ключ: {secret_key}\nㅤㅤТип контента: application/json')
